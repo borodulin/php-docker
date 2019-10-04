@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt-get update
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y software-properties-common
 
@@ -9,8 +9,6 @@ RUN apt-get install -y language-pack-en-base
 RUN apt-get install -y iputils-ping
 
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
-
-RUN apt-get update && apt-get upgrade -y
 
 RUN echo "Europe/Moscow" > /etc/timezone
 RUN apt-get install tzdata -y
@@ -32,13 +30,15 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 RUN apt-get install -y git
 
-RUN  apt-get install -y supervisor
+RUN apt-get install -y supervisor
 
 RUN mkdir /run/php
 
 WORKDIR /app
 
+RUN echo "xdebug.remote_enable=1" >> /etc/php/7.1/mods-available/20-xdebug.ini
+RUN echo "xdebug.remote_connect_back=1" >> /etc/php/7.1/mods-available/20-xdebug.ini
+
 EXPOSE 9000
 
 CMD ["php-fpm7.1", "--nodaemonize"]
-

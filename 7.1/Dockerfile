@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt-get update
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y software-properties-common
 
@@ -10,7 +10,6 @@ RUN apt-get install -y iputils-ping
 
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 
-RUN apt-get update && apt-get upgrade -y
 
 RUN echo "Europe/Moscow" > /etc/timezone
 RUN apt-get install tzdata -y
@@ -32,13 +31,15 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 RUN apt-get install -y git
 
-RUN  apt-get install -y supervisor
+RUN apt-get install -y supervisor
 
 RUN mkdir /run/php
 
 WORKDIR /app
 
 EXPOSE 9000
+
+RUN echo "listen = 0.0.0.0:9000" >> /etc/php/7.1/fpm/pool.d/www.conf
 
 CMD ["php-fpm7.1", "--nodaemonize"]
 

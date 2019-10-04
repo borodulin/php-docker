@@ -2,25 +2,24 @@ FROM ubuntu:latest
 
 RUN apt-get update && apt-get upgrade -y
 
-RUN apt-get install -y software-properties-common
+RUN apt install -y software-properties-common
 
-RUN apt-get install -y language-pack-en-base
+RUN apt install -y language-pack-en-base
 
 RUN apt-get install -y iputils-ping
 
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 
-
 RUN echo "Europe/Moscow" > /etc/timezone
 RUN apt-get install tzdata -y
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-RUN apt-get install -y php7.2 php7.2-cli php7.2-common php7.2-json php7.2-opcache php7.2-mysql php7.2-mbstring \
-    php7.2-zip php7.2-fpm php7.2-dev php7.2-pgsql php7.2-amqp php7.2-xml php7.2-intl php7.2-curl php7.2-bcmath \
-    php7.2-gd php7.2-imagick php7.2-igbinary
+RUN apt-get install -y php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-mysql php7.3-mbstring \
+    php7.3-zip php7.3-fpm php7.3-dev php7.3-pgsql php7.3-amqp php7.3-xml php7.3-intl php7.3-curl php7.3-bcmath \
+    php7.3-gd php7.3-imagick php7.3-igbinary
 
 RUN pecl install timezonedb \
-    && echo "extension=timezonedb.so" > /etc/php/7.2/mods-available/timezonedb.ini \
+    && echo "extension=timezonedb.so" > /etc/php/7.3/mods-available/timezonedb.ini \
     && phpenmod timezonedb
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -37,7 +36,7 @@ WORKDIR /app
 
 EXPOSE 9000
 
-RUN echo "listen = 0.0.0.0:9000" >> /etc/php/7.2/fpm/pool.d/www.conf
+RUN echo "listen = 0.0.0.0:9000" >> /etc/php/7.3/fpm/pool.d/www.conf
 
-CMD ["php-fpm7.2", "--nodaemonize"]
+CMD ["php-fpm7.3", "--nodaemonize"]
 
