@@ -26,12 +26,14 @@ steps:
         from_secret: username
       PASSWORD:
         from_secret: password
+
   - name: php-fpm:7.2
     image: docker:dind
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
+      - docker login --password $PASSWORD --username $USERNAME
       - docker build 7.2 -t php-fpm:7.2
       - docker tag php-fpm:7.2 borodulin/php-fpm:7.2
       - docker push borodulin/php-fpm:7.2
@@ -42,6 +44,11 @@ steps:
       - docker tag php-fpm:7.2-xdebug borodulin/php:7.2-xdebug
       - docker push borodulin/php:7.2
       - docker push borodulin/php:7.2-xdebug
+    environment:
+      USERNAME:
+        from_secret: username
+      PASSWORD:
+        from_secret: password
 
   - name: php-fpm:7.3
     image: docker:dind
@@ -49,6 +56,7 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
+      - docker login --password $PASSWORD --username $USERNAME
       - docker build 7.3 -t php-fpm:7.3
       - docker tag php-fpm:7.3 borodulin/php-fpm:7.3
       - docker push borodulin/php-fpm:7.3
@@ -59,6 +67,11 @@ steps:
       - docker tag php-fpm:7.3-xdebug borodulin/php:7.3-xdebug
       - docker push borodulin/php:7.3
       - docker push borodulin/php:7.3-xdebug
+    environment:
+      USERNAME:
+        from_secret: username
+      PASSWORD:
+        from_secret: password
 
 volumes:
   - name: dockersock
