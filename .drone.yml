@@ -4,24 +4,13 @@ name: default
 
 
 steps:
-  - name: docker-login
-    image: docker:dind
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
-    environment:
-      USERNAME:
-        from_secret: username
-      PASSWORD:
-        from_secret: password
-    commands:
-      - docker login --password $PASSWORD --username $USERNAME
   - name: php-fpm:7.1
     image: docker:dind
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
+      - docker login --password $PASSWORD --username $USERNAME
       - docker build 7.1 -t php-fpm:7.1
       - docker tag php-fpm:7.1 borodulin/php-fpm:7.1
       - docker push borodulin/php-fpm:7.1
@@ -32,7 +21,11 @@ steps:
       - docker tag php-fpm:7.1-xdebug borodulin/php:7.1-xdebug
       - docker push borodulin/php:7.1
       - docker push borodulin/php:7.1-xdebug
-
+    environment:
+      USERNAME:
+        from_secret: username
+      PASSWORD:
+        from_secret: password
   - name: php-fpm:7.2
     image: docker:dind
     volumes:
