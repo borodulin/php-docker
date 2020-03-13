@@ -4,14 +4,18 @@ name: default
 
 
 steps:
-  - name: test
+  - name: docker-login
     image: docker:dind
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
+    environment:
+      USERNAME:
+        from_secret: username
+      PASSWORD:
+        from_secret: password
     commands:
-      - docker ps
-      - whoami
+      - docker login --password $PASSWORD --username $USERNAME
   - name: php-fpm:7.1
     image: docker:dind
     volumes:
