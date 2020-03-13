@@ -4,14 +4,56 @@ name: default
 
 
 steps:
-  - name: test
-    privileged: true
+  - name: php-fpm:7.1
     image: docker:dind
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - docker ps -a
+      - docker build 7.1 -t php-fpm:7.1
+      - docker tag php-fpm:7.1 borodulin/php-fpm:7.1
+      - docker push borodulin/php-fpm:7.1
+      - docker build 7.1/xdebug -t php-fpm:7.1-xdebug
+      - docker tag php-fpm:7.1-xdebug borodulin/php-fpm:7.1-xdebug
+      - docker push borodulin/php-fpm:7.1-xdebug
+      - docker tag php-fpm:7.1 borodulin/php:7.1
+      - docker tag php-fpm:7.1-xdebug borodulin/php:7.1-xdebug
+      - docker push borodulin/php:7.1
+      - docker push borodulin/php:7.1-xdebug
+
+  - name: php-fpm:7.2
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker build 7.2 -t php-fpm:7.2
+      - docker tag php-fpm:7.2 borodulin/php-fpm:7.2
+      - docker push borodulin/php-fpm:7.2
+      - docker build 7.2/xdebug -t php-fpm:7.2-xdebug
+      - docker tag php-fpm:7.2-xdebug borodulin/php-fpm:7.2-xdebug
+      - docker push borodulin/php-fpm:7.2-xdebug
+      - docker tag php-fpm:7.2 borodulin/php:7.2
+      - docker tag php-fpm:7.2-xdebug borodulin/php:7.2-xdebug
+      - docker push borodulin/php:7.2
+      - docker push borodulin/php:7.2-xdebug
+
+  - name: php-fpm:7.3
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker build 7.3 -t php-fpm:7.3
+      - docker tag php-fpm:7.3 borodulin/php-fpm:7.3
+      - docker push borodulin/php-fpm:7.3
+      - docker build 7.3/xdebug -t php-fpm:7.3-xdebug
+      - docker tag php-fpm:7.3-xdebug borodulin/php-fpm:7.3-xdebug
+      - docker push borodulin/php-fpm:7.3-xdebug
+      - docker tag php-fpm:7.3 borodulin/php:7.3
+      - docker tag php-fpm:7.3-xdebug borodulin/php:7.3-xdebug
+      - docker push borodulin/php:7.3
+      - docker push borodulin/php:7.3-xdebug
 
 volumes:
   - name: dockersock
